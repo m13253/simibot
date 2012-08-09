@@ -23,7 +23,7 @@ s.send("NICK %s\r\n" % NICK)
 s.send("USER %s %s bla :%s\r\n" % (IDENT, HOST, REALNAME))
 s.send("JOIN :%s\r\n" % CHAN)
 
-quiting=0
+quiting=False
 while not quiting:
     readbuffer=readbuffer+s.recv(1024)
     temp=string.split(readbuffer, "\n")
@@ -44,7 +44,7 @@ while not quiting:
                 if line.find(" PRIVMSG %s :" % NICK)!=-1:
                     if line.split(" PRIVMSG %s :" % NICK)[1]=="Get out of this channel!": # A small hack
                         s.send("QUIT :Client Quit\r\n")
-                        quiting=1
+                        quiting=True
                     else:
                         s.send("PRIVMSG %s :%s: 我不接受私信哦，在聊天室里面用“%s: ”开头就可以联系我。\r\n" % (rnick, rnick, NICK))
                 else:
