@@ -53,7 +53,7 @@ while 1:
                             resp="我不明白你的意思，我可能不够聪明。"
                         else:
                             resp=json.loads(resp)["response"].encode("utf-8")
-                        time.sleep(random.randomm()*2)
+                        time.sleep(random.random()*2)
                         s.send("PRIVMSG %s :%s: %s\r\n" % (CHAN, rnick, resp))
         except:
             s.send("PRIVMSG %s :%s 出现了一点小故障，正在努力恢复工作。\r\n" % (CHAN, NICK))
