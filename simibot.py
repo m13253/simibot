@@ -50,9 +50,9 @@ while 1:
                     if line.split(" PRIVMSG %s :" % CHAN)[1].startswith("%s:" % NICK):
                         resp=urllib.urlopen("http://www.simsimi.com/func/req?%s" % urllib.urlencode({"lc": "zh", "msg": line.split(" PRIVMSG %s :%s:" % (CHAN, NICK))[1].lstrip()})).read()
                         if resp=="{}":
-                            resp="我不明白你的意思，我可能不够聪明。"
+                            resp="我不明白你的意思。"
                         else:
-                            resp=json.loads(resp)["response"].encode("utf-8")
+                            resp=json.loads(resp)["response"].encode("utf-8").replace("\n", " ")
                         time.sleep(random.random()*2)
                         s.send("PRIVMSG %s :%s: %s\r\n" % (CHAN, rnick, resp))
         except:
