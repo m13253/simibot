@@ -40,7 +40,7 @@ while 1:
                 s.send("PRIVMSG %s :%s: 欢迎加入 %s 频道，我是聊天机器人，和我聊天请加上“%s: ”\r\n" % (CHAN, rnick, CHAN, NICK))
             elif sline[1]=="PRIVMSG":
                 rnick=sline[0][1:].split("!")[0]
-                if line.find(" PRIVMSG %s :" % NICK)!=1 then:
+                if line.find(" PRIVMSG %s :" % NICK)!=1:
                     if line.split(" PRIVMSG %s :" % NICK)[1]=="Get out of this channel!": # A small hack
                         s.send("QUIT\r\n")
                         exit()
