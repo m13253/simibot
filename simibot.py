@@ -7,6 +7,7 @@ import string
 import urllib
 import json
 import time
+import random
 
 HOST="irc.freenode.net"
 PORT=6667
@@ -39,13 +40,17 @@ while 1:
                 s.send("PRIVMSG %s :%s: 欢迎加入 %s 频道，我是聊天机器人，和我聊天请加上“%s: ”\r\n" % (CHAN, rnick, CHAN, NICK))
             elif sline[1]=="PRIVMSG":
                 rnick=sline[0][1:].split("!")[0]
-                if line.split(" PRIVMSG %s :" % CHAN)[1].startswith("%s:" % NICK):
-                    resp=urllib.urlopen("http://www.simsimi.com/func/req?%s" % urllib.urlencode({"lc": "zh", "msg": line.split(" PRIVMSG %s :%s:" % (CHAN, NICK))[1].lstrip()})).read()
-                    if resp=="{}":
-                        resp="我不明白你的意思，我可能不够聪明。"
-                    else:
-                        resp=json.loads(resp)["response"].encode("utf-8")
-                    s.send("PRIVMSG %s :%s: %s\r\n" % (CHAN, rnick, resp))
+                if line.find(" PRIVMSG %s :" % NICK)!=1 then:
+                    s.send("PRIVMSG %s :%s: 我不接受私信哦，在聊天室里面用“%s: ”开头就可以联系我。\r\n" % (rnick, rnick, NICK))
+                else:
+                    if line.split(" PRIVMSG %s :" % CHAN)[1].startswith("%s:" % NICK):
+                        resp=urllib.urlopen("http://www.simsimi.com/func/req?%s" % urllib.urlencode({"lc": "zh", "msg": line.split(" PRIVMSG %s :%s:" % (CHAN, NICK))[1].lstrip()})).read()
+                        if resp=="{}":
+                            resp="我不明白你的意思，我可能不够聪明。"
+                        else:
+                            resp=json.loads(resp)["response"].encode("utf-8")
+                        time.sleep(random.randomm()*2)
+                        s.send("PRIVMSG %s :%s: %s\r\n" % (CHAN, rnick, resp))
         except:
             s.send("PRIVMSG %s :貌似我出了故障，可能会运行不稳定，请重新启动。\r\n" % CHAN)
 
