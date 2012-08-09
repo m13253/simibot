@@ -42,8 +42,8 @@ while 1:
                 rnick=sline[0][1:].split("!")[0]
                 if line.find(" PRIVMSG %s :" % NICK)!=-1:
                     if line.split(" PRIVMSG %s :" % NICK)[1]=="Get out of this channel!": # A small hack
-                        s.send("QUIT\r\n")
-                        exit()
+                        s.send("QUIT :Client Quit\r\n")
+                        sys.exit()
                     else:
                         s.send("PRIVMSG %s :%s: 我不接受私信哦，在聊天室里面用“%s: ”开头就可以联系我。\r\n" % (rnick, rnick, NICK))
                 else:
