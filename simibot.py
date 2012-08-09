@@ -6,6 +6,7 @@ import socket
 import string
 import urllib
 import json
+import time
 
 HOST="irc.freenode.net"
 PORT=6667
@@ -33,10 +34,12 @@ while 1:
             if sline[0]=="PING":
                 s.send("PONG %s\r\n" % sline[1])
             elif sline[1]=="JOIN":
-                s.send("PRIVMSG %s :欢迎加入 %s 频道，我是聊天机器人，和我聊天请加上“%s: ”\r\n" % (CHAN, CHAN, NICK))
+                rnick=sline[0][1:].split("!")[0]
+                time.sleep(2)
+                s.send("PRIVMSG %s :%s: 欢迎加入 %s 频道，我是聊天机器人，和我聊天请加上“%s: ”\r\n" % (CHAN, rnick, CHAN, NICK))
             elif sline[1]=="PRIVMSG":
                 rnick=sline[0][1:].split("!")[0]
-                if line.split(" PRIVMSG %s :" % CHAN)[1].split(":")[0]==NICK:
+                if line.split(" PRIVMSG %s :" % CHAN)[1].startswith("%s:" % NICK):
                     resp=urllib.urlopen("http://www.simsimi.com/func/req?%s" % urllib.urlencode({"lc": "zh", "msg": line.split(" PRIVMSG %s :%s:" % (CHAN, NICK))[1].lstrip()})).read()
                     if resp=="{}":
                         resp="我不明白你的意思，我可能不够聪明。"
