@@ -5,6 +5,7 @@ import sys
 import socket
 import string
 import urllib
+import urllib2
 import json
 import time
 import random
@@ -49,7 +50,10 @@ while not quiting:
                         s.send("PRIVMSG %s :%s: 我不接受私信哦，在聊天室里面用“%s: ”开头就可以联系我。\r\n" % (rnick, rnick, NICK))
                 else:
                     if line.split(" PRIVMSG %s :" % CHAN)[1].startswith("%s:" % NICK):
-                        resp=urllib.urlopen("http://www.simsimi.com/func/req?%s" % urllib.urlencode({"lc": "zh", "msg": line.split(" PRIVMSG %s :%s:" % (CHAN, NICK))[1].lstrip()})).read()
+                        opener=urllib2.build_opener()
+                        opener.addheaders = [("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.1 (KHTML, like Gecko) Safari/537.1"), ("X-Forwarded-For", "10.2.0.101")]
+
+                        resp=opener.open("http://www.simsimi.com/func/req?%s" % urllib.urlencode({"lc": "zh", "msg": line.split(" PRIVMSG %s :%s:" % (CHAN, NICK))[1].lstrip()})).read()
                         if resp=="{}":
                             resp="我不明白你的意思。"
                         else:
