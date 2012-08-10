@@ -38,8 +38,9 @@ while not quiting:
                 s.send("PONG %s\r\n" % sline[1])
             elif sline[1]=="JOIN":
                 rnick=sline[0][1:].split("!")[0]
-                time.sleep(2)
-                s.send("PRIVMSG %s :%s: 欢迎加入 %s 频道，我是聊天机器人，和我聊天请加上“%s: ”\r\n" % (CHAN, rnick, CHAN, NICK))
+                if not rnick.endswith("bot"):
+                    time.sleep(2)
+                    s.send("PRIVMSG %s :%s: 欢迎加入 %s 频道，我是聊天机器人，和我聊天请加上“%s: ”\r\n" % (CHAN, rnick, CHAN, NICK))
             elif sline[1]=="PRIVMSG":
                 rnick=sline[0][1:].split("!")[0]
                 if line.find(" PRIVMSG %s :" % NICK)!=-1:
