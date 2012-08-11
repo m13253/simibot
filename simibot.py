@@ -84,7 +84,7 @@ while not quiting:
                                 resp=DONTKNOW[0]
                             else:
                                 resp=json.loads(resp)["response"].encode("utf-8").replace("\n", " ")
-                                resp=re.sub("([Ss]im)?[sS]imi|小(黄)?(鸡|雞)|(机|機)器(鸡|雞)|黄小(鸡|雞)", NICK, resp)
+                                resp=re.sub("([Ss]im)?[sS]imi|小(黄|黃)?(鸡|雞)|(机|機)器(鸡|雞)|(黄|黃)小(鸡|雞)", NICK, resp)
                         else:
                             resp=("你想说什么？在“%s: ”后面输入你想说的话。" % NICK)
                         time.sleep(random.random()*2)
