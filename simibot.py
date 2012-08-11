@@ -40,7 +40,7 @@ while not quiting:
                 rnick=sline[0][1:].split("!")[0]
                 if not rnick.endswith("bot"):
                     time.sleep(2)
-                    s.send("PRIVMSG %s :%s: 欢迎加入 %s 频道，我是聊天机器人，和我聊天请加上“%s: ”\r\n" % (CHAN, rnick, CHAN, NICK))
+                    s.send("PRIVMSG %s :%s，欢迎加入 %s 频道，我是聊天机器人，和我聊天请在开头加上“%s: ”\r\n" % (CHAN, rnick, CHAN, NICK))
             elif sline[1]=="PRIVMSG":
                 rnick=sline[0][1:].split("!")[0]
                 if line.find(" PRIVMSG %s :" % NICK)!=-1:
