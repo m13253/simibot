@@ -9,6 +9,7 @@ import urllib2
 import json
 import time
 import random
+import re
 
 HOST="irc.freenode.net"
 PORT=6667
@@ -83,7 +84,7 @@ while not quiting:
                                 resp=DONTKNOW[0]
                             else:
                                 resp=json.loads(resp)["response"].encode("utf-8").replace("\n", " ")
-                                resp=resp.replace("SimSimi", NICK).replace("simsimi", NICK).replace("Simi", NICK).replace("simi", NICK)
+                                resp=re.sub("([Ss]im)?[sS]imi", NICK, resp)
                         else:
                             resp=("你想说什么？在“%s: ”后面输入你想说的话。" % NICK)
                         time.sleep(random.random()*2)
