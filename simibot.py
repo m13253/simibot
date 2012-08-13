@@ -64,7 +64,7 @@ def update_cookies(name):
     else:
         newcookie=""
         newcookie="sagree=true; selected_nc=ch; "+newcookie
-    COOKIES[name](newcookie, fake_ip)
+    COOKIES[name]=(newcookie, fake_ip)
     time.sleep(random.random()*3)
 
 quiting=False
@@ -74,7 +74,7 @@ resting=False
 def rest():
     global energy, resting, quiting
     while not quiting:
-        timer.sleep(10)
+        time.sleep(10)
         if energy<100:
             energy=energy+10
         else:
