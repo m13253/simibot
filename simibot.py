@@ -122,7 +122,7 @@ while not quiting:
                                 resp=h.read()
                                 info=h.info()
                                 if "Set-Cookie" in info:
-                                    COOKIES[rnick][0]=info["Set-Cookie"]
+                                    COOKIES[rnick]=(info["Set-Cookie"], COOKIES[rnick][1])
                                 if resp=="{}":
                                     random.shuffle(DONTKNOW)
                                     resp=DONTKNOW[0]
