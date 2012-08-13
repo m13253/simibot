@@ -17,6 +17,7 @@ NICK="simibot"
 IDENT="simibot"
 REALNAME="simibot"
 CHAN="#Orz"
+COOKIES={}
 
 DONTKNOW=[
     "我不明白你的意思。",
@@ -45,6 +46,14 @@ s.connect((HOST, PORT))
 s.send("NICK %s\r\n" % NICK)
 s.send("USER %s %s bla :%s\r\n" % (IDENT, HOST, REALNAME))
 s.send("JOIN :%s\r\n" % CHAN)
+
+def update_cookies(name):
+    if not (name in COOKIES):
+        c_opener=urllib2.build_opener()
+        c_opener.addheaders = [("Referer", "http://www.simsimi.com/"), ("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.1 (KHTML, like Gecko) Safari/537.1"), ("X-Forwarded-For", "10.2.0.101")]
+        COOKIES[name]=c_opener.open("http://www.simsimi.com/talk.htm").info()["Set-Cookie"]
+        COOKIES[name]="sagree=true; selected_nc=ch; "+COOKIES[name]
+        time.sleep(random.random()*5)
 
 quiting=False
 while not quiting:
@@ -75,21 +84,28 @@ while not quiting:
                     if line.split(" PRIVMSG %s :" % CHAN)[1].startswith("%s:" % NICK):
                         req=line.split(" PRIVMSG %s :%s:" % (CHAN, NICK))[1].strip()
                         if req:
-                            req=req.replace(NICK, "SimSimi")
+                            update_cookies(rnick)
+                            req=req.replace(NICK, "SimSimi").replace(CHAN, "这里")
                             opener=urllib2.build_opener()
-                            opener.addheaders = [("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.1 (KHTML, like Gecko) Safari/537.1"), ("X-Forwarded-For", "10.2.0.101")]
-                            resp=opener.open("http://www.simsimi.com/func/req?%s" % urllib.urlencode({"lc": "zh", "msg": req})).read()
+                            opener.addheaders = [("Accept", "application/json, text/javascript, */*; q=0.01"), ("Accept-Charset", "UTF-8,*;q=0.5"), ("Accept-Language", "zh-CN,zh;q=0.8,en-US;q=0.6,en;q=0.4"), ("Cookie", COOKIES[rnick]), ("Content-Type", "application/json; charset=utf-8"), ("Referer", "http://www.simsimi.com/talk.htm"), ("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.1 (KHTML, like Gecko) Safari/537.1"), ("X-Forwarded-For", "10.2.0.101"), ("X-Requested-With", "XMLHttpRequest")]
+                            h=opener.open("http://www.simsimi.com/func/req?%s" % urllib.urlencode({"msg": req, "lc": "zh"}))
+                            resp=h.read()
+                            info=h.info()
+                            if "Cookie" in info:
+                                COOKIES[rnick]=info["Cookie"]
                             if resp=="{}":
                                 random.shuffle(DONTKNOW)
                                 resp=DONTKNOW[0]
                             else:
                                 resp=json.loads(resp)["response"].encode("utf-8").replace("\n", " ")
+                                if resp=="hi":
+                                    update_cookies(rnick)
                                 resp=re.sub("([Ss]im)?[sS]imi|小(黄|黃)?(鸡|雞)|(机|機)器(鸡|雞)|(黄|黃)小(鸡|雞)", NICK, resp)
                         else:
                             resp=("你想说什么？在“%s: ”后面输入你想说的话。" % NICK)
                         time.sleep(random.random()*2)
                         s.send("PRIVMSG %s :%s: %s\r\n" % (CHAN, rnick, resp))
-        except:
-            s.send("PRIVMSG %s :%s 出现了一点小故障，正在努力恢复工作。\r\n" % (CHAN, NICK))
+        except Exception as e:
+            s.send("PRIVMSG %s :%s 出现了一点小故障，正在努力恢复工作: %s\r\n" % (CHAN, NICK, e))
 
 # vim: et ft=python sts=4 sw=4 ts=4
