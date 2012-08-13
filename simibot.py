@@ -68,15 +68,16 @@ def update_cookies(name):
     time.sleep(random.random()*3)
 
 energy=100
-rest=False
+resting=False
 def rest():
+    global energy, resting
     if energy<100:
-        energy=emergy+10
+        energy=energy+10
     else:
         rest=False
-    timer.start()
-timer=threading.Timer(10, rest)
-timer.start()
+        energy=100
+    threading.Timer(10, rest).start()
+threading.Timer(10, rest).start()
 
 quiting=False
 while not quiting:
@@ -105,12 +106,13 @@ while not quiting:
                         s.send("PRIVMSG %s :%s: 我不接受私信哦，在聊天室里面用“%s: ”开头就可以联系我。\r\n" % (rnick, rnick, NICK))
                 else:
                     if line.split(" PRIVMSG %s :" % CHAN)[1].startswith("%s:" % NICK):
-                        if not rest:
+                        if not resting:
                             req=line.split(" PRIVMSG %s :%s:" % (CHAN, NICK))[1].strip()
                             if req:
-                                energy=energy-10
+                                energy=energy-8
                                 if energy<0:
-                                    rest=True
+                                    resting=True
+                                    energy=0
                                 update_cookies(rnick)
                                 req=req.replace(NICK, "SimSimi").replace(CHAN, "这里")
                                 opener=urllib2.build_opener()
