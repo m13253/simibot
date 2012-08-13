@@ -53,7 +53,7 @@ def update_cookies(name):
         oldcookie, fake_ip=COOKIES[name]
     else:
         oldcookie=None
-        fake_ip=int(random()*253+1)
+        fake_ip=int(random.random()*253+1)
     c_opener=urllib2.build_opener()
     c_opener.addheaders = [("Referer", "http://www.simsimi.com/"), ("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.1 (KHTML, like Gecko) Safari/537.1"), ("X-Forwarded-For", "10.2.0.%d" % fake_ip)]
     if oldcookie:
@@ -67,19 +67,21 @@ def update_cookies(name):
     COOKIES[name](newcookie, fake_ip)
     time.sleep(random.random()*3)
 
+quiting=False
+
 energy=100
 resting=False
 def rest():
-    global energy, resting
-    if energy<100:
-        energy=energy+10
-    else:
-        rest=False
-        energy=100
-    threading.Timer(10, rest).start()
-threading.Timer(10, rest).start()
+    global energy, resting, quiting
+    while not quiting:
+        timer.sleep(10)
+        if energy<100:
+            energy=energy+10
+        else:
+            resting=False
+            energy=100
+threading.Thread(target=rest).start()
 
-quiting=False
 while not quiting:
     readbuffer=readbuffer+s.recv(1024)
     temp=string.split(readbuffer, "\n")
