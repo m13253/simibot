@@ -50,20 +50,17 @@ s.send("JOIN :%s\r\n" % CHAN)
 
 def update_cookies(name):
     if name in COOKIES:
-        oldcookie, fake_ip=COOKIES[name]
+        fake_ip=COOKIES[name][1]
     else:
-        oldcookie=None
         fake_ip=int(random.random()*253+1)
     c_opener=urllib2.build_opener()
     c_opener.addheaders = [("Referer", "http://www.simsimi.com/"), ("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.1 (KHTML, like Gecko) Safari/537.1"), ("X-Forwarded-For", "10.2.0.%d" % fake_ip)]
-    if oldcookie:
-        c_opener.addheaders.append(["Cookie", oldcookie])
     f=c_opener.open("http://www.simsimi.com/talk.htm").info()
     if "Set-Cookie" in f:
         newcookie=f["Set-Cookie"]
     else:
         newcookie=""
-        newcookie="sagree=true; selected_nc=ch; "+newcookie
+    newcookie="sagree=true; selected_nc=ch; "+newcookie
     COOKIES[name]=(newcookie, fake_ip)
     time.sleep(random.random()*3)
 
@@ -115,7 +112,8 @@ while not quiting:
                                 if energy<0:
                                     resting=True
                                     energy=0
-                                update_cookies(rnick)
+                                if not (rnick in COOKIES):
+                                    update_cookies(rnick)
                                 req=req.replace(NICK, "SimSimi").replace(CHAN, "这里")
                                 opener=urllib2.build_opener()
                                 time.sleep(random.random()*2)
