@@ -121,8 +121,8 @@ while not quiting:
                                 h=opener.open("http://www.simsimi.com/func/req?%s" % urllib.urlencode({"msg": req, "lc": "zh"}))
                                 resp=h.read()
                                 info=h.info()
-                                if "Cookie" in info:
-                                    COOKIES[rnick]=info["Cookie"]
+                                if "Set-Cookie" in info:
+                                    COOKIES[rnick][0]=info["Set-Cookie"]
                                 if resp=="{}":
                                     random.shuffle(DONTKNOW)
                                     resp=DONTKNOW[0]
