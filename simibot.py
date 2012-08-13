@@ -139,6 +139,8 @@ while not quiting:
                             time.sleep(random.random()*2)
                             resp="呼呼～好累，我要休息。"
                         s.send("PRIVMSG %s :%s: %s\r\n" % (CHAN, rnick, resp))
+        except KeyboardInterrupt:
+            quiting=True
         except Exception as e:
             s.send("PRIVMSG %s :%s 出现了一点小故障，正在努力恢复工作: %s\r\n" % (CHAN, NICK, e))
 
