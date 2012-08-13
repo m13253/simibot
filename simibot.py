@@ -57,7 +57,7 @@ def update_cookies(name):
     c_opener=urllib2.build_opener()
     c_opener.addheaders = [("Referer", "http://www.simsimi.com/"), ("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.1 (KHTML, like Gecko) Safari/537.1"), ("X-Forwarded-For", "10.2.0.%d" % fake_ip)]
     if oldcookie:
-        c_opener.addheaders["Cookie"]=oldcookie
+        c_opener.addheaders.append(["Cookie", oldcookie])
     f=c_opener.open("http://www.simsimi.com/talk.htm").info()
     if "Set-Cookie" in f:
         newcookie=f["Set-Cookie"]
