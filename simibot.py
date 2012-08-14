@@ -107,14 +107,14 @@ while not quiting:
                     if line.split(" PRIVMSG %s :" % CHAN)[1].startswith("%s:" % NICK):
                         if not resting:
                             req=line.split(" PRIVMSG %s :%s:" % (CHAN, NICK))[1].strip()
-                            if req and not req.strip().endswith("欢迎加入 %s 频道，我是聊天机器人，和我聊天请在开头加上“%s: ”" % (CHAN, NICK)):
+                            if req and req.find("欢迎加入")==-1:
                                 energy=energy-8
                                 if energy<0:
                                     resting=True
                                     energy=0
                                 if not (rnick in COOKIES):
                                     update_cookies(rnick)
-                                req=req.replace(NICK, "SimSimi").replace(CHAN, "这里")
+                                req=req.replace(NICK, "SimSimi").replace(CHAN+" 频道", "这里").replace(CHAN, "这里")
                                 opener=urllib2.build_opener()
                                 time.sleep(random.random()*2)
                                 opener.addheaders = [("Accept", "application/json, text/javascript, */*; q=0.01"), ("Accept-Charset", "UTF-8,*;q=0.5"), ("Accept-Language", "zh-CN,zh;q=0.8,en-US;q=0.6,en;q=0.4"), ("Cookie", COOKIES[rnick][0]), ("Content-Type", "application/json; charset=utf-8"), ("Referer", "http://www.simsimi.com/talk.htm"), ("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.1 (KHTML, like Gecko) Safari/537.1"), ("X-Forwarded-For", "10.2.0.%d" % COOKIES[rnick][1]), ("X-Requested-With", "XMLHttpRequest")]
