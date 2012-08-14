@@ -107,7 +107,7 @@ while not quiting:
                     if line.split(" PRIVMSG %s :" % CHAN)[1].startswith("%s:" % NICK):
                         if not resting:
                             req=line.split(" PRIVMSG %s :%s:" % (CHAN, NICK))[1].strip()
-                            if req:
+                            if req and not req.strip().endswith("欢迎加入 %s 频道，我是聊天机器人，和我聊天请在开头加上“%s: ”" % (CHAN, NICK)):
                                 energy=energy-8
                                 if energy<0:
                                     resting=True
