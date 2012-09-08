@@ -159,8 +159,11 @@ while not quiting:
     except KeyboardInterrupt:
         quiting=True
     except Exception as e:
-        c.say(CHAN, u"%s 出现了一点小故障，正在努力恢复工作: %s" % (NICK, e))
-    except socket.err as e:
+        try:
+            c.say(CHAN, u"%s 出现了一点小故障，正在努力恢复工作: %s" % (NICK, e))
+        except:
+            pass
+    except socket.error as e:
         sys.stderr.write("Error: %s\n", e)
         c.quit("Network error.")
 
