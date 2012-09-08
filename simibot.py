@@ -20,7 +20,7 @@ PORT=6667
 NICK="simibot"
 IDENT="simibot"
 REALNAME="simibot"
-CHANS=["#Orz"]
+CHANS=["##Orz"]
 COOKIES={}
 
 DONTKNOW=[
